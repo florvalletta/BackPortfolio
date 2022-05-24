@@ -5,6 +5,7 @@ import com.crud.abml_.dto.DatosPersonalesDto;
 import com.crud.abml_.dto.Mensaje;
 import com.crud.abml_.model.DatosPersonales;
 import com.crud.abml_.service.DatosPersonalesService;
+import java.io.Serializable;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,6 +2,7 @@
 package com.crud.abml_.model;
 
 import com.crud.abml_.security.models.User;
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Getter @Setter
 @Entity
 @Table(name="educacion")
-public class Educacion {
+public class Educacion implements Serializable {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
