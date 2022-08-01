@@ -21,9 +21,9 @@ public class Educacion implements Serializable {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name="titulo", length=45, nullable=false)
+    @Column(name="titulo", length=500, nullable=false)
     private String titulo;
-    @Column(name="institucion", length=45, nullable=false)
+    @Column(name="institucion", length=240, nullable=false)
     private String institucion;
     @Column(name="fechaInicio", length=4, nullable=false)
     private String fechaInicio;

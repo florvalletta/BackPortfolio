@@ -1,23 +1,22 @@
 
 package com.crud.abml_.security.controller;
 
+import com.crud.abml_.security.dto.JwtDto;
 import com.crud.abml_.security.jwt.JwtUtils;
 import com.crud.abml_.security.models.ERole;
 import com.crud.abml_.security.models.Role;
 import com.crud.abml_.security.models.User;
 import com.crud.abml_.security.payload.request.LoginRequest;
 import com.crud.abml_.security.payload.request.SignupRequest;
-import com.crud.abml_.security.payload.response.JwtResponse;
 import com.crud.abml_.security.payload.response.MessageResponse;
 import com.crud.abml_.security.repository.RoleRepository;
 import com.crud.abml_.security.repository.UserRepository;
 import com.crud.abml_.security.services.UserDetailsImpl;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin(origins = "https://florenciavportfolio.web.app")
+//@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/autenticacion")
 public class AuthController {
@@ -46,17 +46,15 @@ public class AuthController {
 	JwtUtils jwtUtils;
         
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<JwtDto> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-		return ResponseEntity.ok(new JwtResponse(jwt,userDetails.getId(),userDetails.getUsername(),userDetails.getEmail(), roles));
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();	
+                JwtDto jwtDto = new JwtDto(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+                return new ResponseEntity(jwtDto, HttpStatus.OK);
 	}
         
 	@PostMapping("/signup")

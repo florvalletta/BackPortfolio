@@ -21,7 +21,7 @@ public class AcercaDe implements Serializable {
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
-    @Column(name="descripcion", length=240, nullable=false)
+    @Column(name="descripcion", length=2000, nullable=false)
     private String descripcion;
 
     @OneToOne(mappedBy = "acercaDe")
